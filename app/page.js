@@ -11,6 +11,15 @@ export default function Home() {
     Americas: "bg-yellow-400",
   }
 
+  const regionColorRGB =
+  {
+    Asia: "#4f46e5",
+    Europe: "#a78bfa",
+    Africa: "#b45309",
+    Oceania: "#f97316",
+    Americas: "#facc15",
+  }
+
 
 
   return (
@@ -31,10 +40,13 @@ export default function Home() {
             );
           })}
         </div>
-        <Chart regionColor={regionColor} />
+
+        <Chart regionColor={regionColorRGB} />
+        {/* <Chart /> */}
+
 
         {/* Footer */}
-        <p>Source: <span>Our World In Data</span></p>
+        <p className='mt-4'>Source: <span className='underline cursor-pointer'>Our World In Data</span></p>
 
       </div>
     </main>

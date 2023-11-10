@@ -1,7 +1,25 @@
 "use client"
 
-import PopulationBar from './PopulationBar';
+import { Bar } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 import { useState } from 'react';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const mockData = [
     {
@@ -66,29 +84,43 @@ const mockData = [
     },
 ]
 
-
-
 const Chart = ({ regionColor }) => {
     const [isPlaying, setIsPlaying] = useState(false)
 
     const handlePlay = () => {
         setIsPlaying((prev) => !prev)
     }
+
+    const labels = mockData.map((item => item.country));
+    const data = {
+        labels,
+        datasets: [
+            {
+                data: mockData.map((item => item.population)),
+                backgroundColor: mockData.map((item => regionColor[item.region])),
+            },
+        ],
+    }
+    const options = {
+        indexAxis: 'y',
+        elements: {
+            bar: {
+                borderWidth: 0,
+            },
+        },
+        scale: {
+            ticks: {
+                display: false
+            }
+        },
+        plugins: false
+    };
+
     return (
         <>
             {/* Chart */}
-            <div className='w-4/5 mx-auto p-4'>
-                {mockData.map((item) => {
-                    let barWith = ((item.population) / (mockData[0].population) * 100).toFixed(0)
-                    return (
-                        <PopulationBar key={item.country}
-                            country={item.country}
-                            population={item.population}
-                            // width={"w-[" + barWith + "%]"}
-                            colorClass={regionColor[item.region]}
-                        />
-                    )
-                })}
+            <div className='mx-auto p-2'>
+                <Bar data={data} options={options} />
             </div>
 
             {/* Controller */}
